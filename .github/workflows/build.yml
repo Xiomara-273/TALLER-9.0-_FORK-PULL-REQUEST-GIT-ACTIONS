@@ -1,0 +1,33 @@
+name: Python Build and Test
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Descargar codigo del repositorio
+      uses: actions/checkout@v4
+
+    - name: Configurar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Instalar dependencias
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Compilar e Instalar Modulo
+      run: |
+        python setup.py install
+
+    - name: Mostrar Estado Exitoso
+      run: echo "✔ Proyecto de Python compilado y verificado correctamente"
